@@ -1,0 +1,27 @@
+
+
+networks:
+  web_network:
+    driver: bridge
+
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    expose:
+      - "8000"
+    networks:
+      - web_network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+    networks:
+      - web_network
